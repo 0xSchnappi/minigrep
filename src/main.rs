@@ -9,18 +9,10 @@ fn main() {
      * 3.调用lib.rs中的run函数，以启动逻辑代码的运行
      * 4.如果run返回一个错误，需要对该错误进行处理
      */
-    let args: Vec<String> = env::args().collect();
-    // 所有的用户输入不可信！不可信！不可信！
-    dbg!(&args);
-    if args.len() < 2 {
-        let usage = "usage:\
-        minigrep --searchstring example-filename.txt\
-        ";
-        println!("{}", usage);
-        return;
-    }
 
-    let config = Config::build(&args).unwrap_or_else(|err| {
+    // 所有的用户输入不可信！不可信！不可信！
+
+    let config = Config::build(env::args()).unwrap_or_else(|err| {
         eprintln!("Problem parsing arguments:{err}");
         process::exit(1);
     });
