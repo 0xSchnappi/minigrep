@@ -24,7 +24,20 @@ impl Config {
             None => return Err("Didn't get a file path"),
         };
 
-        let ignore_case = env::var("IGNORE_CASE").is_ok();
+        let ignore_case = match env::var("IGNORE_CASE").is_ok_and(|x| x == String::from("1")) {
+            true => true,
+            false => match args.next() {
+                Some(arg) => {
+                    if arg.to_uppercase().contains("IGNORE_CASE") {
+                        true
+                    } else {
+                        false
+                    }
+                }
+                None => false,
+            },
+        };
+
         Ok(Config {
             query,
             file_path,
